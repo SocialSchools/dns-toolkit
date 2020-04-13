@@ -1,6 +1,5 @@
-import sys
-import csv
 import subprocess
+import sys
 from optparse import OptionParser
 
 
@@ -14,7 +13,7 @@ def main():
         sys.exit(2)
     else:
         cmd = f"host -a {domain} | awk 'NR==10, NR==$NF' >> ~/{domain}.csv"
-        data = subprocess.call([cmd], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        subprocess.call([cmd], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
         print(f"Please find the generated file at ~/{domain}.csv")
 
 

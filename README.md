@@ -1,5 +1,5 @@
-# dns-tookit
-Tools to automate finding DNS records for websites
+# dns-toolkit
+Tools to automate finding DNS records for websites and create a nice CSV file for use.
 
 ```sh
 mkvirtualenv dns -p $(which python3)
