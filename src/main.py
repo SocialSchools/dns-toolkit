@@ -28,7 +28,7 @@ def main():
         subprocess.call([cmd], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
         for subdomain in subdomains:
             print(f"Running queries for {subdomain}.{domain}")
-            cmd = f"host -a {subdomain}.{domain} |  grep -v 'Received' | awk 'NR==10, NR==$NF' >> ~/{domain}.csv"
+            cmd = f"host -a {subdomain}.{domain} |  grep -v 'Received'| grep -v 'Trying' | grep -v 'ANSWER SECTION'| grep -v 'QUESTION SECTION' | grep -v 'HEADER' | grep -v 'ANY' | grep -v 'flags: qr rd' >> ~/{domain}.csv"
             subprocess.call([cmd], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
         print(f"Opening the the generated file at ~/{domain}.csv")
         cmd = f"open ~/{domain}.csv"
