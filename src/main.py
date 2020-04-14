@@ -12,9 +12,27 @@ def main():
         print("domain is required")
         sys.exit(2)
     else:
-        cmd = f"host -a {domain} | awk 'NR==10, NR==$NF' >> ~/{domain}.csv"
+        subdomains = [
+            'www',
+            'mail',
+            'autodiscover',
+            'lyncdiscover',
+            'sip',
+            'enterpriseregistration',
+            'enterpriseenrollment',
+            '_sipfederationtls._tcp',
+            '_sip._tls',
+        ]
+        print(f"Running queries for {domain}")
+        cmd = f"host -a {domain} | grep -v 'Received'| awk 'NR==10, NR==$NF' > ~/{domain}.csv"
         subprocess.call([cmd], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-        print(f"Please find the generated file at ~/{domain}.csv")
+        for subdomain in subdomains:
+            print(f"Running queries for {subdomain}.{domain}")
+            cmd = f"host -a {subdomain}.{domain} |  grep -v 'Received' | awk 'NR==10, NR==$NF' >> ~/{domain}.csv"
+            subprocess.call([cmd], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        print(f"Opening the the generated file at ~/{domain}.csv")
+        cmd = f"open ~/{domain}.csv"
+        subprocess.call([cmd], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 
 
 if __name__ == "__main__":
